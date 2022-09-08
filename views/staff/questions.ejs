@@ -1,0 +1,55 @@
+<%- include('../partials/header2') %>
+<div class="container " style="background: grey;">
+    <div class="row">
+        <div class="col col-sm-6">
+            QUESTION
+        </div>
+        <div class="col col-sm-1">
+            A
+        </div>
+        <div class="col col-sm-1">
+            B
+        </div>
+        <div class="col col-sm-1">
+            C
+        </div>
+        <div class="col col-sm-1">
+            D
+        </div>
+        <div class="col col-sm-1">
+        ANSWER
+        </div>
+        <div class="col col-sm-1">
+            ACTION
+        </div>
+    </div>
+</div>
+<% for (var i =0;i<questionList.length;i++){%> 
+    <div class="container">
+        <div class="row">
+            <div class="col col-sm-6">
+                <%= questionList[i].question %> 
+            </div>
+            <div class="col col-sm-1">
+                <%= questionList[i].option1 %> 
+            </div>
+            <div class="col col-sm-1">
+                <%= questionList[i].option2 %> 
+            </div>
+            <div  class="col col-sm-1">
+                <%= questionList[i].option3 %> 
+            </div>
+            <div class="col col-sm-1">
+                <%= questionList[i].option4 %> 
+            </div>
+            <div class="col col-sm-1">
+                <%= questionList[i].answer %> 
+            </div>
+            <div class="col col-sm-1">
+                Edit Page
+            </div>
+        </div>
+    </div>
+<% } %> 
+
+<%- include('../partials/footer2') %>

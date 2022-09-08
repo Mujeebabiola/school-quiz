@@ -1,0 +1,32 @@
+<%- include('../partials/header2') %>
+<div class="container question">
+    <div class="row">
+        <div class="col">
+            <h2>
+               <%= pageNum+1 %>.    <%= result[pageNum].question %> 
+            </h2>
+     
+        </div>
+    </div>
+
+</div>
+
+
+
+<form action="/test" method="post">
+    <div class="container options">
+
+        <input type="radio" id="option1" name="option" value="<%= result[pageNum].option1 %> ">
+        <label for="option1"><%= result[pageNum].option1 %></label><br>
+        <input type="radio" id="option2" name="option" value="<%= result[pageNum].option2%>">
+        <label for="option2"><%= result[pageNum].option2 %></label><br>
+        <input type="radio" id="option3" name="option" value="<%= result[pageNum].option3%>">
+        <label for="option3"><%= result[pageNum].option3 %></label><br>
+        <input type="radio" id="option4" name="option" value="<%= result[pageNum].option4%>">
+        <label for="option4"><%= result[pageNum].option4 %></label><br>
+        <button type="submit">Next</button>
+    </div>
+
+</form>
+
+<%- include('../partials/footer2') %>
