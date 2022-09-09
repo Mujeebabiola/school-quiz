@@ -34,7 +34,11 @@ var usernotfound = ''
 var pageNum =0;
 var totalPoints = 0
 
-app.route('/')
+app.get('/',function(req,res){
+    res.render('homepage')
+})
+
+app.route('/student')
 .get((req,res)=>{
     res.render('student/login',{error:LoginError,usernotfound:usernotfound})
     totalPoints =0;
@@ -55,13 +59,13 @@ app.route('/')
             else{
                 LoginError = "incorrect password entered"
                 usernotfound = ''
-                res.redirect('/')
+                res.redirect('/student')
             }
         }
         else{
             usernotfound='User not found, try to register instead'
             LoginError=''
-            res.redirect('/')
+            res.redirect('/student')
         }
     })
 })
@@ -178,7 +182,7 @@ app.route('/staff')
         }
         else if(result){
             if(result.password===password){
-                res.redirect("/staff/post")
+                res.redirect("/staff/questions")
             }
             else{
                 LoginError = "incorrect password entered"
@@ -228,7 +232,7 @@ app.route("/staff/register")
     })
 })
 
-
+var id_ = ""
 app.route("/staff/questions")
 .get(function(req,res){
    questions.find(function(err,questionList){
@@ -240,6 +244,81 @@ app.route("/staff/questions")
     }
    })
 })
+.post(function(req,res){
+ var requested = req.body.ED
+ const myArray = requested.split('+')
+ id_ = myArray
+
+ if(PurifyString (myArray[1])==='edit'){
+    res.redirect('/staff/edit')
+ }
+ else if (PurifyString(myArray[1])==='delete'){
+    questions.findByIdAndDelete(myArray[0],function(err){
+        if(err){
+            console.log(err)
+        }
+        else{
+            res.redirect('/staff/questions')
+        }
+    })
+    
+ }
+
+})
+
+app.route('/staff/post')
+.get(function(req,res){
+    res.render('staff/post')
+})
+.post(function(req,res){
+    var question_form =
+        {
+            question:req.body.question,
+        
+                option1:req.body.option1,
+                option2:req.body.option2,
+                option3:req.body.option3,
+                option4:req.body.option4,
+            answer:req.body.answer
+        }
+    var new_question = new questions(question_form)
+    if(new_question){
+        new_question.save(function(err){
+            if(err){console.log(err)}
+            else{res.redirect('/staff/questions')}
+        })
+    }
+})
+
+app.route('/staff/edit')
+.get(function(req,res){
+questions.findOne({_id : PurifyString (id_[0])},function(err,result){
+    if( err){
+        console.log(err)
+    }
+    else{
+        res.render('staff/edit',{question:result})
+    }
+})
+})
+.post(function(req,res){
+    var question_form =
+    {
+        question:req.body.question,
+    
+            option1:req.body.option1,
+            option2:req.body.option2,
+            option3:req.body.option3,
+            option4:req.body.option4,
+        answer:req.body.answer,
+        new:true
+    }
+ questions.findOneAndUpdate ({_id:PurifyString (id_[0])},question_form,function(err,result){})
+ res.redirect('/staff/questions')
+})
+
+
+
 app.listen(port,()=>{
     console.log(`The app is listening on the port ${port}`)
 })
